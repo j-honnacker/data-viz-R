@@ -16,10 +16,10 @@ for( year in 1996:2018 ) {
 
   # read file into DataFrame 'rhine_wl_df'
   if (year < 2018) {
-    file <- paste0("data_src/Rhine-water-levels/Rheinpegel_Tag ", year,".csv")
+    file <- paste0("data_stg0/Rhine-water-levels/Rheinpegel_Tag ", year,".csv")
   }
   else {
-    file <- paste0("data_src/Rhine-water-levels/Rheinpegel_Tag", year,".csv")
+    file <- paste0("data_stg0/Rhine-water-levels/Rheinpegel_Tag", year,".csv")
   }
   rhine_wl_df <- readr::read_delim( file = file
                                   , delim = ";"
@@ -45,4 +45,4 @@ for( year in 1996:2018 ) {
 rhine_wl <- do.call("rbind", list_of_rhine_wl_dfs)
 
 # save final DataFrame 'rhine_wl'
-fwrite(rhine_wl, file = "data/rhine_wl_1996-2018.csv")
+fwrite(rhine_wl, file = "data_stg1/rhine_wl_1996-2018.csv")
