@@ -1,4 +1,5 @@
 library(readr)
+library(magrittr)
 library(ggplot2)
 
 # set working directory
