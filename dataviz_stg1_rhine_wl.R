@@ -1,4 +1,5 @@
-library(readr)
+library(data.table)
+library(fasttime)   # converting char => datetime
 library(magrittr)
 library(ggplot2)
 
@@ -7,10 +8,13 @@ library(ggplot2)
 
 
 # read data
-rhine_wl_df <- read_csv( file = "data_stg1/rhine_wl_1996-2018.csv" )
+rhine_wl_dt <- fread( file = "data_stg1/rhine_wl_1996-2018.csv" )
+
+# "data.table v1.12.8" documentation suggests `fasttime` for converting
+rhine_wl_dt[,date := fasttime::fastPOSIXct(date)]
 
 
 # LINE CHART ----
-rhine_wl_df %>%
+rhine_wl_dt %>%
   ggplot( aes(x=date, y=water_level) ) +
     geom_line(na.rm=TRUE)
