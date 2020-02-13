@@ -1,5 +1,7 @@
 library(data.table)
 library(fasttime)   # converting char => datetime
+library(lubridate)  # floor_date()
+library(scales)     # date_format() for x axis
 library(magrittr)
 library(ggplot2)
 
@@ -18,3 +20,16 @@ rhine_wl_dt[,date := fasttime::fastPOSIXct(date)]
 rhine_wl_dt %>%
   ggplot( aes(x=date, y=water_level) ) +
     geom_line(na.rm=TRUE)
+
+
+# BAR CHART ----
+# (1) pre-processing
+rhine_wl_dt[complete.cases(rhine_wl_dt), # (1a) filter out missing values
+            mean(water_level),           # (1b) compute mean of water levels...
+            by=.(year = floor_date(date, unit="years")) # (1c) ..for each year
+            ] %>%
+  # (2) plotting
+  ggplot(aes(x=year, y=V1), na.rm=TRUE) +
+  geom_bar(stat = "identity") +
+  scale_x_datetime(breaks="year", labels = date_format("%Y"), expand = c(0 ,0 )) +
+  theme(axis.text.x=element_text( angle=90) )
